@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="RepairCenterModelFirst.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="RepairCenterModelFirstStoreContainer">
+    <EntitySet Name="Technicians" EntityType="RepairCenterModelFirst.Store.Technicians" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UnitTypes" EntityType="RepairCenterModelFirst.Store.UnitTypes" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Activities" EntityType="RepairCenterModelFirst.Store.Activities" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="ActivityTechnician" Association="RepairCenterModelFirst.Store.ActivityTechnician">
+      <End Role="Activity" EntitySet="Activities" />
+      <End Role="Technician" EntitySet="Technicians" />
+    </AssociationSet>
+    <AssociationSet Name="UnitTypeActivity" Association="RepairCenterModelFirst.Store.UnitTypeActivity">
+      <End Role="UnitType" EntitySet="UnitTypes" />
+      <End Role="Activity" EntitySet="Activities" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Technicians">
+    <Key>
+      <PropertyRef Name="TechID" />
+    </Key>
+    <Property Name="TechID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Alias" Type="nvarchar" Nullable="false" MaxLength="6" />
+    <Property Name="FullName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Status" Type="int" Nullable="false" />
+    <Property Name="TelephoneNumber" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UnitTypes">
+    <Key>
+      <PropertyRef Name="TypeID" />
+    </Key>
+    <Property Name="TypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Model" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Description" Type="nvarchar" Nullable="false" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="Activities">
+    <Key>
+      <PropertyRef Name="ActivityID" />
+    </Key>
+    <Property Name="ActivityID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Priority" Type="int" Nullable="false" />
+    <Property Name="SerialNumber" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="DateReceived" Type="datetime" Nullable="false" />
+    <Property Name="Age" Type="int" Nullable="false" />
+    <Property Name="CurrentStatus" Type="int" Nullable="false" />
+    <Property Name="TechnicianTechID" Type="int" Nullable="false" />
+    <Property Name="UnitTypeTypeID" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="ActivityTechnician">
+    <End Role="Activity" Type="RepairCenterModelFirst.Store.Activities" Multiplicity="*" />
+    <End Role="Technician" Type="RepairCenterModelFirst.Store.Technicians" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Technician">
+        <PropertyRef Name="TechID" />
+      </Principal>
+      <Dependent Role="Activity">
+        <PropertyRef Name="TechnicianTechID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UnitTypeActivity">
+    <End Role="UnitType" Type="RepairCenterModelFirst.Store.UnitTypes" Multiplicity="1" />
+    <End Role="Activity" Type="RepairCenterModelFirst.Store.Activities" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UnitType">
+        <PropertyRef Name="TypeID" />
+      </Principal>
+      <Dependent Role="Activity">
+        <PropertyRef Name="UnitTypeTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="RepairCenterModelFirst" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="RepairCenterModelFirstContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Technicians" EntityType="RepairCenterModelFirst.Technician" />
+          <EntitySet Name="UnitTypes" EntityType="RepairCenterModelFirst.UnitType" />
+          <EntitySet Name="Activities" EntityType="RepairCenterModelFirst.Activity" />
+          <AssociationSet Name="ActivityTechnician" Association="RepairCenterModelFirst.ActivityTechnician">
+            <End Role="Activity" EntitySet="Activities" />
+            <End Role="Technician" EntitySet="Technicians" />
+          </AssociationSet>
+          <AssociationSet Name="UnitTypeActivity" Association="RepairCenterModelFirst.UnitTypeActivity">
+            <End Role="UnitType" EntitySet="UnitTypes" />
+            <End Role="Activity" EntitySet="Activities" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Technician">
+          <Key>
+            <PropertyRef Name="TechID" />
+          </Key>
+          <Property Name="TechID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" cg:SetterAccess="Private" />
+          <Property Name="Alias" Type="String" Nullable="false" MaxLength="6" />
+          <Property Name="FullName" Type="String" Nullable="false" />
+          <Property Name="Status" Nullable="false" Type="RepairCenterModelFirst.TechnicianStatus" />
+          <Property Name="TelephoneNumber" Type="String" Nullable="false" />
+          <NavigationProperty Name="Activities" Relationship="RepairCenterModelFirst.ActivityTechnician" FromRole="Technician" ToRole="Activity" />
+        </EntityType>
+        <EnumType Name="TechnicianStatus">
+          <Member Name="Free" Value="1" />
+          <Member Name="Busy" Value="2" />
+          <Member Name="NotAvailable" Value="3" />
+        </EnumType>
+        <EntityType Name="UnitType">
+          <Key>
+            <PropertyRef Name="TypeID" />
+          </Key>
+          <Property Name="TypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Model" Type="String" Nullable="false" MaxLength="50" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="255" />
+          <NavigationProperty Name="Activities" Relationship="RepairCenterModelFirst.UnitTypeActivity" FromRole="UnitType" ToRole="Activity" />
+        </EntityType>
+        <EntityType Name="Activity">
+          <Key>
+            <PropertyRef Name="ActivityID" />
+          </Key>
+          <Property Name="ActivityID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Priority" Type="Int32" Nullable="false" />
+          <Property Name="SerialNumber" Type="String" Nullable="false" />
+          <Property Name="DateReceived" Type="DateTime" Nullable="false" />
+          <Property Name="Age" Type="Int32" Nullable="false" />
+          <Property Name="CurrentStatus" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Technician" Relationship="RepairCenterModelFirst.ActivityTechnician" FromRole="Activity" ToRole="Technician" />
+          <Property Name="TechnicianTechID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="UnitType" Relationship="RepairCenterModelFirst.UnitTypeActivity" FromRole="Activity" ToRole="UnitType" />
+          <Property Name="UnitTypeTypeID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EnumType Name="ActivityStatus">
+          <Member Name="Pending" Value="1" />
+          <Member Name="QA" Value="2" />
+          <Member Name="Archive" Value="3" />
+        </EnumType>
+        <Association Name="ActivityTechnician">
+          <End Type="RepairCenterModelFirst.Activity" Role="Activity" Multiplicity="*" />
+          <End Type="RepairCenterModelFirst.Technician" Role="Technician" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Technician">
+              <PropertyRef Name="TechID" />
+            </Principal>
+            <Dependent Role="Activity">
+              <PropertyRef Name="TechnicianTechID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UnitTypeActivity">
+          <End Type="RepairCenterModelFirst.UnitType" Role="UnitType" Multiplicity="1" />
+          <End Type="RepairCenterModelFirst.Activity" Role="Activity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UnitType">
+              <PropertyRef Name="TypeID" />
+            </Principal>
+            <Dependent Role="Activity">
+              <PropertyRef Name="UnitTypeTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="RepairCenterModelFirstStoreContainer" CdmEntityContainer="RepairCenterModelFirstContainer">
+    <EntitySetMapping Name="Technicians">
+      <EntityTypeMapping TypeName="IsTypeOf(RepairCenterModelFirst.Technician)">
+        <MappingFragment StoreEntitySet="Technicians">
+          <ScalarProperty Name="TechID" ColumnName="TechID" />
+          <ScalarProperty Name="Alias" ColumnName="Alias" />
+          <ScalarProperty Name="FullName" ColumnName="FullName" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="TelephoneNumber" ColumnName="TelephoneNumber" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UnitTypes">
+      <EntityTypeMapping TypeName="IsTypeOf(RepairCenterModelFirst.UnitType)">
+        <MappingFragment StoreEntitySet="UnitTypes">
+          <ScalarProperty Name="TypeID" ColumnName="TypeID" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Activities">
+      <EntityTypeMapping TypeName="IsTypeOf(RepairCenterModelFirst.Activity)">
+        <MappingFragment StoreEntitySet="Activities">
+          <ScalarProperty Name="ActivityID" ColumnName="ActivityID" />
+          <ScalarProperty Name="Priority" ColumnName="Priority" />
+          <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
+          <ScalarProperty Name="DateReceived" ColumnName="DateReceived" />
+          <ScalarProperty Name="Age" ColumnName="Age" />
+          <ScalarProperty Name="CurrentStatus" ColumnName="CurrentStatus" />
+          <ScalarProperty Name="TechnicianTechID" ColumnName="TechnicianTechID" />
+          <ScalarProperty Name="UnitTypeTypeID" ColumnName="UnitTypeTypeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
