@@ -4,8 +4,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TechTask_Management"
+        xmlns:techTastManagement="clr-namespace:TechTast_Management"
         mc:Ignorable="d"
         Title="TechTask Manager" Name="TechTaskMainWindow" Height="350" Width="859">
+    <Window.CommandBindings>
+        <CommandBinding Command="techTastManagement:CustomCommands.PendingSearch" CanExecute="PendingSearchCommand_CanExecute" Executed="PendingSearchCommand_Executed" />
+        <CommandBinding Command="techTastManagement:CustomCommands.QASearch" CanExecute="QASearchCommand_OnCanExecute" Executed="QASearchCommand_OnExecuted"/>
+        <CommandBinding Command="techTastManagement:CustomCommands.DeletePendingActivity" CanExecute="DeletePendingActivityCommandBinding_CanExecute" Executed="DeletePendingActivityCommandBinding_OnExecuted"/>
+        <CommandBinding Command="techTastManagement:CustomCommands.QABackToTech" CanExecute="QABackToTechCommandBinding_CanExecute" Executed="QABackToTechCommandBinding_OnExecuted"/>
+        <CommandBinding Command="techTastManagement:CustomCommands.DeleteUnitType" CanExecute="DeleteUnitTypeCommandBinding_CanExecute" Executed="DeleteUnitTypeCommandBinding_OnExecuted"/>
+        <CommandBinding Command="techTastManagement:CustomCommands.DeleteTechnician" CanExecute="DeleteTechnicianCommandBinding_CanExecute" Executed="DeleteTechnicianCommandBinding_OnExecuted"/>
+        <CommandBinding Command="techTastManagement:CustomCommands.MoveToQA" CanExecute="MoveToQACommandBinding_CanExecute" Executed="MoveToQACommandBinding_OnExecuted"/>
+    </Window.CommandBindings>
+
     <Grid>
         <TabControl>
             <TabItem Header="Pending">
@@ -29,20 +40,28 @@
                                 <ColumnDefinition Width="40"></ColumnDefinition>
                                 <ColumnDefinition></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <Button Name="PendingSearchButton" Margin="5" Grid.ColumnSpan="2">Search</Button>
+                            <Button Name="PendingSearchButton" Command="techTastManagement:CustomCommands.PendingSearch" Margin="5" Grid.ColumnSpan="2">Search</Button>
                             <TextBlock Name="PendingSearchByBlock" Margin="5" Grid.Row="1" Grid.Column="0">By:</TextBlock>
-                            <ComboBox Name="PendingSearchByComboBox" Margin="5" Grid.Row="1" Grid.Column="1">
+                            <ComboBox Name="PendingSearchByComboBox" SelectedIndex="0"  Margin="5" Grid.Row="1" Grid.Column="1">
                                 <!--Place Search Value Types Here-->
+                                <ComboBoxItem>ActivityID</ComboBoxItem>
+                                <ComboBoxItem>Priority</ComboBoxItem>
+                                <ComboBoxItem>SerialNumber</ComboBoxItem>
+                                <ComboBoxItem>TechAlias</ComboBoxItem>
+                                <ComboBoxItem>Type</ComboBoxItem>
                             </ComboBox>
                             <TextBlock Name="PendingSearchValueBlock" Margin="5" Grid.Row="2" Grid.Column="0">Value:</TextBlock>
                             <TextBox Name="PendingSearchValueBox" Margin="5" Grid.Row="2" Grid.Column="1"></TextBox>
                         </Grid>
                     </Border>
                     <StackPanel Grid.Row="1">
-                        <Button Name="PendingCreateActivityButton" Margin="5">Create New Activity</Button>
-                        <Button Name="PendingDeleteActivityButton" Margin="5">Delete Activity</Button>
+                        <Button Name="PendingCreateActivityButton" Margin="5" Click="PendingCreateActivityButton_OnClick">Create New Activity</Button>
+                        <Button Name="PendingDeleteActivityButton" Command="techTastManagement:CustomCommands.DeletePendingActivity" Margin="5">Delete Activity</Button>
+                        <Button Name="EditActivityButton"  Margin="5" Click="EditActivityButton_OnClick">Edit Activity</Button>
+                        <Button Name="PendingToQaActivityButton" Command="techTastManagement:CustomCommands.MoveToQA" Margin="5">Move to QA</Button>
+                        <Button Name="PendingRefreshButton"  Click="RefreshButton_OnClick" Margin="5">Refresh</Button>
                     </StackPanel>
-                    <DataGrid Name="PendingDataGrid" Margin="5" Grid.Column="1" Grid.RowSpan="2">
+                    <DataGrid Name="PendingDataGrid" Margin="5" Grid.Column="1" Grid.RowSpan="2" ColumnWidth="*" CanUserAddRows="false" SelectionUnit="FullRow" SelectionMode="Single" IsReadOnly="True">
                     </DataGrid>
                 </Grid>
             </TabItem>
@@ -67,22 +86,30 @@
                                 <ColumnDefinition Width="40"></ColumnDefinition>
                                 <ColumnDefinition></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <Button Name="QASearchButton" Margin="5" Grid.ColumnSpan="2">Search</Button>
+                            <Button Name="QASearchButton" Command="techTastManagement:CustomCommands.QASearch" Margin="5" Grid.ColumnSpan="2">Search</Button>
                             <TextBlock Name="QASearchByBlock" Margin="5" Grid.Row="1" Grid.Column="0">By:</TextBlock>
-                            <ComboBox Name="QASearchByComboBox" Margin="5" Grid.Row="1" Grid.Column="1">
+                            <ComboBox Name="QASearchByComboBox" SelectedIndex="0" Margin="5" Grid.Row="1" Grid.Column="1">
                                 <!--Place Search Value Types Here-->
+                                <ComboBoxItem>ActivityID</ComboBoxItem>
+                                <ComboBoxItem>Priority</ComboBoxItem>
+                                <ComboBoxItem>SerialNumber</ComboBoxItem>
+                                <ComboBoxItem>TechAlias</ComboBoxItem>
+                                <ComboBoxItem>Type</ComboBoxItem>
                             </ComboBox>
                             <TextBlock Name="QASearchValueBlock" Margin="5" Grid.Row="2" Grid.Column="0">Value:</TextBlock>
                             <TextBox Name="QASearchValueBox" Margin="5" Grid.Row="2" Grid.Column="1"></TextBox>
                         </Grid>
                     </Border>
-                    <Button Name="AqBackToTechButton" Grid.Row="1" Margin="5" Height="22" VerticalAlignment="Top">Return to Technician</Button>
-                    <DataGrid Name="QaDataGrid" Margin="5" Grid.Column="1" Grid.RowSpan="2">
+                    <StackPanel Grid.Row="1">
+                        <Button Name="AqBackToTechButton" Command="techTastManagement:CustomCommands.QABackToTech" Margin="5" >Return to Technician</Button>
+                        <Button Name="QARefreshButton" Click="RefreshButton_OnClick" Margin="5">Refresh</Button>
+                    </StackPanel>
+                    <DataGrid Name="QaDataGrid" Margin="5" Grid.Column="1" Grid.RowSpan="2" ColumnWidth="*" CanUserAddRows="false" SelectionUnit="FullRow" SelectionMode="Single" IsReadOnly="True">
                     </DataGrid>
                 </Grid>
             </TabItem>
             <TabItem Header="Archive">
-                <DataGrid Name="ArchiveDataGrid" Margin="95,5,95,5" Grid.Column="1" Grid.RowSpan="2">
+                <DataGrid Name="ArchiveDataGrid" Margin="95,5,95,5" Grid.Column="1" Grid.RowSpan="2" ColumnWidth="*" CanUserAddRows="false" SelectionUnit="FullRow" SelectionMode="Single" IsReadOnly="True">
                     <!--<DataGrid.Columns>
                         <DataGridTextColumn Header="RepairID" Binding="{Binding RepairID}" Width="60"></DataGridTextColumn>
                         <DataGridTextColumn Header="Priority" Binding="{Binding Priority}"></DataGridTextColumn>
@@ -102,17 +129,10 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <StackPanel Name="TechnicianStackPanel">
-                        <Button Name="AddTechnicianButton" Margin="5">Add Technician</Button>
-                        <Button Name="RemoveTechnicianButton" Margin="5">Remove Technician</Button>
+                        <Button Name="AddTechnicianButton" Click="AddTechnicianButton_OnClick" Margin="5">Add Technician</Button>
+                        <Button Name="RemoveTechnicianButton" Command="techTastManagement:CustomCommands.DeleteTechnician" ToolTip="Make sure the technician you want to remove is not busy." Margin="5">Remove Technician</Button>
                     </StackPanel>
-                    <DataGrid Name="TechniciansDataGrid" Margin="10,10,170,10" Grid.Column="1">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="TechID" Binding="{Binding TechID}" Width="60"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Alias" Binding="{Binding Alias}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Full Name" Binding="{Binding Name}" Width="140"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Current Status" Binding="{Binding Status}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Telephone Number" Binding="{Binding TelephoneNumber}" Width="120"></DataGridTextColumn>
-                        </DataGrid.Columns>
+                    <DataGrid Name="TechniciansDataGrid" Margin="10,10,170,10" Grid.Column="1" ColumnWidth="*" CanUserAddRows="false" SelectionUnit="FullRow" SelectionMode="Single" IsReadOnly="True">
                     </DataGrid>
                 </Grid>
             </TabItem>
@@ -123,15 +143,10 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <StackPanel Name="TUnitTypesStackPanel">
-                        <Button Name="AddUnitTypeButton" Margin="5">Add New Type</Button>
-                        <Button Name="RemoveUnitTypeButton" Margin="5">Remove Type</Button>
+                        <Button Name="AddUnitTypeButton" Click="AddUnitTypeButton_OnClick" Margin="5">Add New Type</Button>
+                        <Button Name="RemoveUnitTypeButton" Command="techTastManagement:CustomCommands.DeleteUnitType" ToolTip="Only Unit Types with no Activities can be deleted." Margin="5">Remove Type</Button>
                     </StackPanel>
-                    <DataGrid Name="UnitTypesDataGrid" Margin="10,10,170,10" Grid.Column="1">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Type ID" Binding="{Binding TypeID}" Width="60"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Model" Binding="{Binding Model}" Width="60"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="325"></DataGridTextColumn>
-                        </DataGrid.Columns>
+                    <DataGrid Name="UnitTypesDataGrid" Margin="10,10,170,10" Grid.Column="1" ColumnWidth="*" CanUserAddRows="false" SelectionUnit="FullRow" SelectionMode="Single" IsReadOnly="True">
                     </DataGrid>
                 </Grid>
             </TabItem>

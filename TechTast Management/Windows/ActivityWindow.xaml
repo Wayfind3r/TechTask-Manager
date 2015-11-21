@@ -4,56 +4,54 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TechTast_Management.Windows"
+        xmlns:techTastManagement="clr-namespace:TechTast_Management"
         mc:Ignorable="d"
-        Title="Activity Details" Height="200" Width="400">
+        Title="Activity Details" Height="140" Width="600" ResizeMode="NoResize">
+    <Window.CommandBindings>
+        <CommandBinding Command="techTastManagement:CustomCommands.Exit" CanExecute="ExitCommand_CanExecute" Executed="ExitCommand_Executed" />
+        
+    </Window.CommandBindings>
     <Grid>
-        <TabControl>
-            <TabItem Header="Details" Name="DetailsTab">
+        
                 <Grid Name="DetailsGrid">
                     <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="50"></ColumnDefinition>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                        <ColumnDefinition Width="50"></ColumnDefinition>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
+                        <ColumnDefinition Width="40"></ColumnDefinition>
+                        <ColumnDefinition Width="150"></ColumnDefinition>
+                        <ColumnDefinition Width="40"></ColumnDefinition>
                         <ColumnDefinition Width="2*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Name="PriorityTextBlock" Margin="5" Grid.Column="0" Grid.Row="0">Priority:</TextBlock>
-                    <ComboBox Name="PriorityValueComboBox" Margin="5" Grid.Column="1" Grid.Row="0"></ComboBox>
-                    <TextBlock Name="IDTextBlock" Margin="5" Grid.Column="2" Grid.Row="0">ID:</TextBlock>
-                    <TextBlock Name="IDValueBlock" Margin="5" Grid.Column="3" Grid.Row="0"></TextBlock>
-                    <TextBlock Name="TypeTextBlock" Margin="5" Grid.Column="4" Grid.Row="0">Type:</TextBlock>
-                    <TextBlock Name="TypeValueBlock" Margin="5" Grid.Column="5" Grid.Row="0"></TextBlock>
-                    <!--ComboBox is Invisible initially-->
-                    <ComboBox Name="TypeValueComboBox" Margin="5" Grid.Column="5" Grid.Row="0" Visibility="Collapsed"></ComboBox>
+                    <TextBlock Name="PriorityTextBlock" Margin="5" Grid.Column="0" ToolTip="Acceptable Priorities are 1-9" Grid.Row="0">Priority:</TextBlock>
+            <ComboBox Name="PriorityValueComboBox" SelectedIndex="0" Margin="5" Grid.Column="1" Grid.Row="0">
+                <ComboBoxItem>1</ComboBoxItem>
+                <ComboBoxItem >2</ComboBoxItem>
+                <ComboBoxItem>3</ComboBoxItem>
+                <ComboBoxItem>4</ComboBoxItem>
+                <ComboBoxItem>5</ComboBoxItem>
+                <ComboBoxItem>6</ComboBoxItem>
+                <ComboBoxItem>7</ComboBoxItem>
+                <ComboBoxItem>8</ComboBoxItem>
+                <ComboBoxItem>9</ComboBoxItem>
+            </ComboBox>
+                    <TextBlock Name="TypeTextBlock" Margin="5" Grid.Column="2" Grid.Row="0">Type:</TextBlock>
+                    <TextBlock Name="TypeValueBlock" Margin="5" Grid.Column="3" Grid.Row="0" Visibility="Collapsed"></TextBlock>
+                    <!--ComboBox is Visible initially-->
+            <ComboBox Name="TypeValueComboBox"  SelectedIndex="0" Margin="5" Grid.Column="3" Grid.Row="0" Visibility="Visible"></ComboBox>
                     <TextBlock Name="TechnicianTextBlock" Margin="5" Grid.Column="0" Grid.Row="1">Tech:</TextBlock>
-                    <ComboBox Name="TechnicianValueComboBox" Margin="5" Grid.Column="1" Grid.Row="1"></ComboBox>
-                    <TextBlock Name="StatusTextBlock" Margin="5" Grid.Column="2" Grid.Row="1">Status:</TextBlock>
-                    <TextBlock Name="StatusValueBlock" Margin="5" Grid.Column="3" Grid.Row="1"></TextBlock>
-                    <TextBlock Name="SerialTextBlock" Margin="5" Grid.Column="4" Grid.Row="1">Serial:</TextBlock>
-                    <TextBlock Name="SerialValueBlock" Margin="5" Grid.Column="5" Grid.Row="1"></TextBlock>
-                    <!--TextBox is Invisible initially-->
-                    <TextBox Name="SerialValueComboBox" Margin="5" Grid.Column="5" Grid.Row="1" Visibility="Collapsed"></TextBox>
-                    <TextBlock Name="DateTextBlock" Margin="5" Grid.Column="0" Grid.Row="2">Date:</TextBlock>
-                    <TextBlock Name="DateValueBlock" Margin="5" Grid.Column="1" Grid.Row="2"></TextBlock>
-                    <TextBlock Name="AgeTextBlock" Margin="5" Grid.Column="2" Grid.Row="2">Age:</TextBlock>
-                    <TextBlock Name="AgeValueBlock" Margin="5" Grid.Column="3" Grid.Row="2"></TextBlock>
-                    <Button Name="SaveButton" Margin="5" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3">Save</Button>
-                    <Button Name="SendtoQAButton" Margin="5" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="3">Send to QA</Button>
-                    <Button Name="CloseButton" Margin="5" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="3">Close</Button>
+            <ComboBox Name="TechnicianValueComboBox"  SelectedIndex="0" Margin="5" Grid.Column="1" Grid.Row="1"></ComboBox>
+                    <TextBlock Name="SerialTextBlock" Margin="5" Grid.Column="4" Grid.Row="0">Serial:</TextBlock>
+                    <TextBox Name="SerialValueTextBox" Margin="5" MaxLength="50" Grid.Column="5" Grid.Row="0" Visibility="Visible"></TextBox>
+                    <TextBlock Name="DateTextBlock" Margin="5" Grid.Column="4" Grid.Row="1">Date:</TextBlock>
+                    <DatePicker Name="DateValueBlock" Margin="5" Grid.Column="5" Grid.Row="1"></DatePicker>
+                    
+                    <Button Name="SaveButton" Click="SaveButton_OnClick" Margin="5" Width="140" HorizontalAlignment="Left" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3">Save</Button>
+            <Button Name="CloseButton" Command="techTastManagement:CustomCommands.Exit" Margin="5" Width="140" HorizontalAlignment="Right" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="3">Close</Button>
                 </Grid>
-            </TabItem>
-            <TabItem Header="History" Name="HistoryTab">
-                <Border Margin="5" BorderBrush="Gray" BorderThickness="1">
-                    <TextBlock Name="ActivityHistoryBlock"></TextBlock>
-                </Border>
-            </TabItem>
-        </TabControl>
     </Grid>
 </Window>

@@ -87,6 +87,7 @@
     <Compile Include="ActivityStatus.cs">
       <DependentUpon>RepairCenterModelFirst.tt</DependentUpon>
     </Compile>
+    <Compile Include="CustomCommands.cs" />
     <Compile Include="RepairCenterModelFirst.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -102,7 +103,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>RepairCenterModelFirst.edmx</DependentUpon>
     </Compile>
+    <Compile Include="SearchSelection.cs" />
     <Compile Include="Services\ActivityService.cs" />
+    <Compile Include="Services\TechnicianService.cs" />
+    <Compile Include="Services\UnitTypeService.cs" />
     <Compile Include="Technician.cs">
       <DependentUpon>RepairCenterModelFirst.tt</DependentUpon>
     </Compile>
@@ -129,6 +133,8 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="ViewModels\ActivityViewModel.cs" />
+    <Compile Include="ViewModels\TechnicianViewModel.cs" />
+    <Compile Include="ViewModels\UnitTypeViewModel.cs" />
     <Compile Include="Windows\ActivityWindow.xaml.cs">
       <DependentUpon>ActivityWindow.xaml</DependentUpon>
     </Compile>
